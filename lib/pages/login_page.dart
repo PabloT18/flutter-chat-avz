@@ -28,7 +28,7 @@ class LoginPage extends StatelessWidget {
                   Text(
                     "Terminos y condiciones de uso",
                     style: TextStyle(fontWeight: FontWeight.w200),
-                  )
+                  ),
                 ],
               ),
             ),
