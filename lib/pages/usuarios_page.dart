@@ -1,4 +1,6 @@
 import 'package:chat_app/models/usuario.dart';
+import 'package:chat_app/services/auth_servider.dart';
+import 'package:provider/provider.dart';
 
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -21,18 +23,24 @@ class _UsuariosPageState extends State<UsuariosPage> {
 
   @override
   Widget build(BuildContext context) {
+    final usuario = Provider.of<AuthService>(context).usuario;
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
         title: Text(
-          "Mi nombre",
+          usuario.nombre,
           style: TextStyle(color: Colors.black87),
         ),
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.exit_to_app),
           color: Colors.black87,
-          onPressed: () {},
+          onPressed: () {
+            //TODO Desconectarnos del socket server
+
+            AuthService.delToken();
+            Navigator.pushReplacementNamed(context, 'login');
+          },
         ),
         actions: [
           Container(
@@ -49,12 +57,11 @@ class _UsuariosPageState extends State<UsuariosPage> {
         enablePullDown: true,
         onRefresh: _cargarUser,
         header: WaterDropHeader(
-          complete: Icon(
-            Icons.check,
-            color: Colors.blue[400],
-          ),
-          waterDropColor: Colors.blue[400],
-        ),
+            complete: Icon(
+              Icons.check,
+              color: Colors.blue[400],
+            ),
+            waterDropColor: Colors.blue[400]),
         child: usersListView(),
       ),
     );

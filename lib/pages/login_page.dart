@@ -1,9 +1,12 @@
+import 'package:chat_app/helpers/show_alert.dart';
+import 'package:chat_app/services/auth_servider.dart';
 import 'package:chat_app/widgets/custom_input.dart';
 import 'package:chat_app/widgets/custum_btn.dart';
 import 'package:chat_app/widgets/login_widget.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -50,6 +53,8 @@ class __FormState extends State<_Form> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+
     return Container(
       margin: EdgeInsets.only(top: 40),
       padding: EdgeInsets.symmetric(horizontal: 50),
@@ -69,7 +74,22 @@ class __FormState extends State<_Form> {
           ),
           CustomButtom(
             label: "Ingrese",
-            onPress: () {},
+            onPress: authService.autenticando
+                ? null
+                : () async {
+                    FocusScope.of(context).unfocus();
+                    final loginOk = await authService.login(
+                        emalCtrl.text.trim(), pswCtrl.text.trim());
+
+                    if (loginOk) {
+                      //TODO: conectar socket sercer
+                      //TODO: nevegar a otra pantalla
+                      Navigator.pushReplacementNamed(context, 'usuarios');
+                    } else {
+                      showAlert(context, "Login incorrecto",
+                          "Revice sus credendciales");
+                    }
+                  },
           ),
         ],
       ),
