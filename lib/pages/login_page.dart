@@ -1,5 +1,6 @@
 import 'package:chat_app/helpers/show_alert.dart';
 import 'package:chat_app/services/auth_servider.dart';
+import 'package:chat_app/services/socket_service.dart';
 import 'package:chat_app/widgets/custom_input.dart';
 import 'package:chat_app/widgets/custum_btn.dart';
 import 'package:chat_app/widgets/login_widget.dart';
@@ -54,6 +55,7 @@ class __FormState extends State<_Form> {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
+    final sockectService = Provider.of<SocketService>(context, listen: false);
 
     return Container(
       margin: EdgeInsets.only(top: 40),
@@ -83,6 +85,7 @@ class __FormState extends State<_Form> {
 
                     if (loginOk) {
                       //TODO: conectar socket sercer
+                      sockectService.connect();
                       //TODO: nevegar a otra pantalla
                       Navigator.pushReplacementNamed(context, 'usuarios');
                     } else {
